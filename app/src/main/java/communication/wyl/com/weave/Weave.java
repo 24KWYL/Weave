@@ -7,9 +7,7 @@ import android.graphics.DrawFilter;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,18 +26,14 @@ public class Weave extends View{
     //屏幕高
     private int screenHeight;
     //波浪点的列表
-    private List<Float> positions;
-    private List<Float> mPositons;
-    //临时列表
-    private List<Float> temps=new ArrayList<>();
-    private List<Float> mTemps=new ArrayList<>();
+    private List<Float> fPositions;
+    private List<Float> sPositions;
     //循环周期
     private float mCycle;
     //浪高
     private int WAVEHEIGHT = 20;
     //速度
     private int mSpeed = 5;
-
     public Weave(Context context, AttributeSet attrs) {
         super(context, attrs);
         //初始化画笔
@@ -58,15 +52,14 @@ public class Weave extends View{
         screenHeight = getMeasuredHeight();
         //初始化周期
         mCycle = (float) (2*Math.PI / screenWidth);
-        positions = new ArrayList<>();
-        mPositons = new ArrayList<>();
+        fPositions = new ArrayList<>(); //波浪1
+        sPositions = new ArrayList<>();  //波浪2
         for(int i = 0;i < screenWidth;i++){
             //初始化波浪点
             float positon = (float) (WAVEHEIGHT * Math.sin(mCycle *i))/2;
             float mpositon= (float) (WAVEHEIGHT * Math.cos(mCycle *i+Math.PI/2))/2;
-            positions.add(positon);
-            mPositons.add(mpositon);
-            Log.i("position",i+"="+positon);
+            fPositions.add(positon);
+            sPositions.add(mpositon);
         }
     }
 
@@ -74,44 +67,32 @@ public class Weave extends View{
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.setDrawFilter(mDrawFilter);
-        drawWave(canvas);
+        drawWeave(canvas,fPositions);
+        drawWeave(canvas,sPositions);
     }
 
-    private void drawWave(Canvas canvas) {
+    //绘制波浪方法
+    private void drawWeave(Canvas canvas,List<Float> positions){
+        List<Float> tems=new ArrayList<>();
         for(int i=0;i<positions.size();i++){
             //画竖线
             canvas.drawLine(i,screenHeight-positions.get(i)-WAVEHEIGHT,i,screenHeight,mPaint);
-            canvas.drawLine(i,screenHeight-mPositons.get(i)-WAVEHEIGHT,i,screenHeight,mPaint);
         }
-        //清空临时数据
-        temps.clear();
         int nowPosition = 0;
+        tems.clear();
         Iterator<Float> iterator = positions.iterator();
         while (iterator.hasNext()){
-            //交换临时点的位置
-            temps.add(iterator.next());
+            //交换临时点位置
+            tems.add(iterator.next());
             iterator.remove();
-            nowPosition = nowPosition +1;
+            nowPosition = nowPosition + 1;
             if (nowPosition==mSpeed)
                 break;
         }
-        positions.addAll(temps);
-        //
-        mTemps.clear();
-        int mNowPosition = 0;
-        Iterator<Float> mIterator = mPositons.iterator();
-        while (mIterator.hasNext()){
-            //交换临时点的位置
-            mTemps.add(mIterator.next());
-            mIterator.remove();
-            mNowPosition = mNowPosition +1;
-            if (mNowPosition==10)
-                break;
-        }
-        mPositons.addAll(mTemps);
-        //重绘
-        invalidate();
+        positions.addAll(tems);
+        invalidate(); //重绘
     }
+
 
     public Weave(Context context) {
         super(context);
