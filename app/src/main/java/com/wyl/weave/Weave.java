@@ -1,4 +1,4 @@
-package communication.wyl.com.weave;
+package com.wyl.weave;
 
 import android.content.Context;
 import android.graphics.Canvas;

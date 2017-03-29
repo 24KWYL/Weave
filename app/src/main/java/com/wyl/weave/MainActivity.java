@@ -1,4 +1,4 @@
-package communication.wyl.com.weave;
+package com.wyl.weave;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

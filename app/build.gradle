@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
     defaultConfig {
-        applicationId "communication.wyl.com.weave"
+        applicationId "com.wyl.weave"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1

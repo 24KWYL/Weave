@@ -4,11 +4,10 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    tools:context="communication.wyl.com.weave.MainActivity">
+    android:background="@color/colorPrimary">
 
 
-    <communication.wyl.com.weave.Weave
+    <com.wyl.weave.Weave
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@color/colorAccent"
